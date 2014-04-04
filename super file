@@ -1,0 +1,30 @@
+#include "mbed.h"
+#include "MMA8451Q.h"
+
+#define MMA8451_I2C_ADDRESS (0x1d<<1)
+
+
+DigitalOut myled(LED_GREEN);
+Serial pc(USBTX, USBRX);
+MMA8451Q acc(PTE25, PTE24, MMA8451_I2C_ADDRESS);
+float x;
+float y,z;
+
+int main() {
+    int i = 0;
+    pc.printf("\nHello World!\n");
+    
+    while (true) {
+        wait(0.5);
+        x = abs(acc.getAccX());
+        y = abs(acc.getAccY());
+        z = abs(acc.getAccZ());
+        
+        // pc.printf("%d \n", i);
+        
+        pc.printf("X: %4.2f, Y: %4.2f, Z: %4.2f. \n", x,y,z);
+        
+        i++;
+        myled = !myled;
+    }
+}
